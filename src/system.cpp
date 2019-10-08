@@ -15,52 +15,38 @@ using std::size_t;
 using std::string;
 using std::vector;
 
-
 // TODO: Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { return this->processes_; }
-/*
-    vector<int> pids = LinuxParser::Pids();
-    
-    for (auto pid: pids) {
-        //std::cout << pid << " creatin Process \n";
-        Process process = Process(pid);
-        processes_.push_back(process);
-    }
-    return this->processes_;
-}
-*/
+vector<Process>& System::Processes() { return processes_; }
 
-
-// DONE: Return the system's kernel identifier (string)
+// TODO: Return the system's kernel identifier (string)
 std::string System::Kernel() { 
-    return LinuxParser::Kernel(); }
+    return LinuxParser::Kernel();
+ }
 
-
-// DONE: Return the system's memory utilization
+// TODO: Return the system's memory utilization
 float System::MemoryUtilization() { 
-    return LinuxParser::MemoryUtilization(); }
+    return LinuxParser::MemoryUtilization();
+ }
 
-
-// DONE: Return the operating system name
+// TODO: Return the operating system name
 std::string System::OperatingSystem() { 
-    return LinuxParser::OperatingSystem(); }
+    return LinuxParser::OperatingSystem();
+}
 
-
-// DONE: Return the number of processes actively running on the system
+// TODO: Return the number of processes actively running on the system
 int System::RunningProcesses() { 
     return LinuxParser::RunningProcesses();
  }
 
-
-// DONE: Return the total number of processes on the system
+// TODO: Return the total number of processes on the system
 int System::TotalProcesses() { 
-    return LinuxParser::TotalProcesses(); }
+    return LinuxParser::TotalProcesses();
+ }
 
-
-// DONE: Return the number of seconds since the system started running
-long int System::UpTime() {
+// TODO: Return the number of seconds since the system started running
+long int System::UpTime() { 
     return LinuxParser::UpTime();
-    }
+ }
