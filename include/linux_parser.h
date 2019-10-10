@@ -49,11 +49,12 @@ long IdleJiffies(std::vector<long>);
 
 // Processes
 std::string Command(int pid);
+std::vector<long> CpuUtilization(int pid);
 std::string Ram(int pid);
 std::string Uid(int pid);
 std::string User(int pid);
 long int UpTime(int pid);
-std::vector<long> ProcessCpuUtilization(int pid);
+
 };  // namespace LinuxParser
 
 #endif

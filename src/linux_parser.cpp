@@ -2,7 +2,6 @@
 #include <unistd.h>
 #include <string>
 #include <vector>
-#include <vector>
 #include <iostream>
 #include <stdlib.h>
 
@@ -273,29 +272,44 @@ string LinuxParser::User(int pid) {
 }
 
 // DONE: Read and return the CPU data associated with a process
-vector<long> LinuxParser::ProcessCpuUtilization(int pid) {
+vector<long> LinuxParser::CpuUtilization(int pid) {
   long utime, stime, cutime, cstime, starttime;
-  string line, dummy;
+  string line;
+  vector<long> data;
+  string word;
+  long number;
+
   std::ifstream stream(kProcDirectory + to_string(pid) + kStatFilename);
   if (stream.is_open()) {
     std::getline(stream, line);
     std::replace(line.begin(), line.end(), '(', '_');
     std::replace(line.begin(), line.end(), ')', '_');
-    std::replace(line.begin(), line.end(), '-', '_');
+    //std::replace(line.begin(), line.end(), '-', '_');
     std::replace(line.begin(), line.end(), '=', ' ');
     std::replace(line.begin(), line.end(), '"', ' ');
     std::istringstream linestream(line);
   
-    for (int i=0; i<12; i++) { linestream >> dummy;}
-    linestream >> utime >> stime >> cutime >> cstime;
-    for (int i=0; i<5; i++) { linestream >> dummy; }
-    linestream >> starttime;
+    for (int i=1; i<4; i++) { 
+        linestream >> word;
+        data.push_back(0);
+    }
+    for (int i=4; i<26; i++) { 
+        linestream >> number;
+        data.push_back(number);
     }
 
-  vector<long> proc_cpu_util {utime, stime, cutime, cstime, starttime};
-  
-  return proc_cpu_util;
+    utime = data[14-1];
+    stime = data[15-1];
+    cutime = data[16-1];
+    cstime = data[17-1];
+    starttime = data[22-1];
+
+    vector<long> proc_cpu_util {utime, stime, cutime, cstime, starttime};
+    return proc_cpu_util;  
+  }
+  return {};
 }
+
 
 // DONE: Read and return the uptime of a process
 long LinuxParser::UpTime(int pid) {

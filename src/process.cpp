@@ -22,17 +22,20 @@ string Process::User() {
 
 // DONE: Return this process's CPU utilization
 float Process::CpuUtilization() { 
-    float Hertz = (float)sysconf(_SC_CLK_TCK);
-    float uptime = (float)LinuxParser::UpTime();
-    vector<long> proc_cpu_util = LinuxParser::ProcessCpuUtilization(pid_);
-    float utime  = (float)proc_cpu_util[0] / Hertz;
-    float stime = (float)proc_cpu_util[1] / Hertz;
-    //float cutime = (float)proc_cpu_util[2] / Hertz;
-    //float cstime = (float)proc_cpu_util[3] / Hertz;
-    float starttime = (float)proc_cpu_util[4] / Hertz;
-    float total_time = utime + stime;
+    float Hertz = (float) sysconf(_SC_CLK_TCK);
+    float uptime = (float) LinuxParser::UpTime();
+    vector<long> cpu_data = LinuxParser::CpuUtilization(pid_);
+    float utime  = (float) cpu_data[0] / Hertz;
+    float stime = (float) cpu_data[1] / Hertz;
+    //float cutime = (float) cpu_data[2] / Hertz;
+    //float cstime = (float) cpu_data[3] / Hertz;
+    float starttime = (float) cpu_data[4] / Hertz;
+    float cpu_time = utime + stime;
     float elapsed_time_since_the_process_started = uptime - starttime ;
-    float cpu_usage_percentage = 100 * (total_time / elapsed_time_since_the_process_started); 
+    float cpu_usage_percentage{0};
+    if (elapsed_time_since_the_process_started > 2) {
+        cpu_usage_percentage = cpu_time / elapsed_time_since_the_process_started; 
+    }
     return cpu_usage_percentage;
 }
 
@@ -60,5 +63,5 @@ long int Process::UpTime() {
 
 // TODO: Overload the "less than" comparison operator for Process objects
 bool Process::operator< (Process & a) {
-    return CpuUtilization() < a.CpuUtilization();
+    return Process::CpuUtilization() < a.Process::CpuUtilization();
 }
