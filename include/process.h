@@ -10,7 +10,7 @@ It contains relevant attributes as shown below
 */
 class Process {
  public:
-  int Pid() const;                        // TODO: See src/process.cpp
+  int Pid() const;                         // DONE: See src/process.cpp
   std::string User();                      // TODO: See src/process.cpp
   std::string Command();                   // TODO: See src/process.cpp
   float CpuUtilization();                  // TODO: See src/process.cpp
@@ -19,10 +19,7 @@ class Process {
   bool operator<(Process const& a) const;  // TODO: See src/process.cpp
 
   // Constructor
-  Process(int pid) { 
-      pid_ = pid;
-      //std::cout << "pid_ is set to " << pid_ << "||";
-  }
+  Process(int pid): pid_(pid) {};
 
   // TODO: Declare any necessary private members
  private:

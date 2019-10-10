@@ -44,7 +44,7 @@ enum CPUStates {
 std::vector<long> CpuUtilization();
 long Jiffies(std::vector<long>);
 long ActiveJiffies(std::vector<long>);
-//long ActiveJiffies(int pid);
+std::vector<long> ActiveJiffies(int pid);
 long IdleJiffies(std::vector<long>);
 
 // Processes
@@ -53,6 +53,7 @@ std::string Ram(int pid);
 std::string Uid(int pid);
 std::string User(int pid);
 long int UpTime(int pid);
+std::vector<long> ProcessCpuUtilization(int pid);
 };  // namespace LinuxParser
 
 #endif
