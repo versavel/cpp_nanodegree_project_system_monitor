@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 #include "process.h"
 #include "processor.h"
@@ -19,6 +20,7 @@ using std::vector;
 Processor& System::Cpu() { 
     return cpu_; }
 
+
 // DONE: Return a container composed of the system's processes
 vector<Process>& System::Processes() {
     processes_.clear();
@@ -26,7 +28,12 @@ vector<Process>& System::Processes() {
     for (int pid : pids) {
         processes_.push_back(Process(pid));
     }
-    return processes_; }
+    std::sort(processes_.begin(), processes_.end());
+    std::reverse(processes_.begin(), processes_.end());
+    
+    return processes_;
+}
+
 
 // DONE: Return the system's kernel identifier (string)
 std::string System::Kernel() { 

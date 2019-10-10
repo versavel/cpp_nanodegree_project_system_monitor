@@ -27,8 +27,8 @@ float Process::CpuUtilization() {
     vector<long> proc_cpu_util = LinuxParser::ProcessCpuUtilization(pid_);
     float utime  = (float)proc_cpu_util[0] / Hertz;
     float stime = (float)proc_cpu_util[1] / Hertz;
-    float cutime = (float)proc_cpu_util[2] / Hertz;
-    float cstime = (float)proc_cpu_util[3] / Hertz;
+    //float cutime = (float)proc_cpu_util[2] / Hertz;
+    //float cstime = (float)proc_cpu_util[3] / Hertz;
     float starttime = (float)proc_cpu_util[4] / Hertz;
     float total_time = utime + stime;
     float elapsed_time_since_the_process_started = uptime - starttime ;
@@ -47,6 +47,7 @@ string Process::Ram() {
     return mem_util_mb;
 }
 
+
 // DONE: Return the age of this process (in seconds)
 long int Process::UpTime() { 
     long system_uptime_sec = LinuxParser::UpTime();
@@ -58,5 +59,6 @@ long int Process::UpTime() {
 
 
 // TODO: Overload the "less than" comparison operator for Process objects
-// REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a[[maybe_unused]]) const { return true; }
+bool Process::operator< (Process & a) {
+    return CpuUtilization() < a.CpuUtilization();
+}

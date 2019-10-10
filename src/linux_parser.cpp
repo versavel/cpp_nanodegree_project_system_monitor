@@ -201,8 +201,7 @@ int LinuxParser::RunningProcesses() {
 
 // DONE: Read and return the command associated with a process
 string LinuxParser::Command(int pid) { 
-  float uptime;
-  string word, line;
+  string line;
   std::ifstream stream(kProcDirectory + to_string(pid) + kCmdlineFilename);
   if (stream.is_open()) {
     std::getline(stream, line);
