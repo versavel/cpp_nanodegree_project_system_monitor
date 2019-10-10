@@ -40,7 +40,11 @@ float Process::CpuUtilization() {
 string Process::Command() { return string(); }
 
 // TODO: Return this process's memory utilization
-string Process::Ram() { return string(); }
+string Process::Ram() {
+    string mem_util_kb = LinuxParser::Ram(pid_);
+    string mem_util_mb = to_string((int)((float) stol(mem_util_kb, nullptr, 10) / 1024.0));
+    return mem_util_mb;
+}
 
 // TODO: Return the age of this process (in seconds)
 long int Process::UpTime() { return 0; }
