@@ -122,21 +122,21 @@ long LinuxParser::Jiffies(vector<long> cpu_util_vect) {
 //long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
 
 
-// TODO: Read and return the number of active jiffies for the system
+// DONE: Read and return the number of active jiffies for the system
 long LinuxParser::ActiveJiffies(vector<long> cpu_util_vect) { 
   long active_jiffies = Jiffies(cpu_util_vect) - IdleJiffies(cpu_util_vect);
   return active_jiffies;
 }
 
 
-// TODO: Read and return the number of idle jiffies for the system
+// DONE: Read and return the number of idle jiffies for the system
 long LinuxParser::IdleJiffies(vector<long> cpu_util_vect) {
   long idle_jiffies;
   idle_jiffies = cpu_util_vect[3];
   return idle_jiffies;
 }
 
-// TODO: Read and return CPU utilization
+// DONE: Read and return CPU utilization
 vector<long> LinuxParser::CpuUtilization() {
   std::string cpu;
   long user, nice, syst, idle, iowait, irq, softirq, 
@@ -203,8 +203,7 @@ int LinuxParser::RunningProcesses() {
 // REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::Command(int pid[[maybe_unused]]) { return string(); }
 
-// TODO: Read and return the memory used by a process
-// REMOVE: [[maybe_unused]] once you define the function
+// DONE: Read and return the memory used by a process
 string LinuxParser::Ram(int pid) {
   string line;
   string key;
@@ -292,6 +291,22 @@ vector<long> LinuxParser::ProcessCpuUtilization(int pid) {
   return proc_cpu_util;
 }
 
-// TODO: Read and return the uptime of a process
-// REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
+// DONE: Read and return the uptime of a process
+long LinuxParser::UpTime(int pid) {
+  long uptime;
+  string line, dummy;
+  std::ifstream stream(kProcDirectory + to_string(pid) + kStatFilename);
+  if (stream.is_open()) {
+    std::getline(stream, line);
+    std::replace(line.begin(), line.end(), '(', '_');
+    std::replace(line.begin(), line.end(), ')', '_');
+    std::replace(line.begin(), line.end(), '-', '_');
+    std::replace(line.begin(), line.end(), '=', ' ');
+    std::replace(line.begin(), line.end(), '"', ' ');
+    std::istringstream linestream(line);
+  
+    for (int i=0; i<21; i++) { linestream >> dummy;}
+    linestream >> uptime;
+    }
+  return uptime;
+}

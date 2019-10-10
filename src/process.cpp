@@ -20,7 +20,7 @@ int Process::Pid() const  { return pid_; }
 string Process::User() { 
     return LinuxParser::User(pid_); }
 
-// TODO: Return this process's CPU utilization
+// DONE: Return this process's CPU utilization
 float Process::CpuUtilization() { 
     float Hertz = (float)sysconf(_SC_CLK_TCK);
     float uptime = (float)LinuxParser::UpTime();
@@ -39,15 +39,22 @@ float Process::CpuUtilization() {
 // TODO: Return the command that generated this process
 string Process::Command() { return string(); }
 
-// TODO: Return this process's memory utilization
+// DONE: Return this process's memory utilization
 string Process::Ram() {
     string mem_util_kb = LinuxParser::Ram(pid_);
     string mem_util_mb = to_string((int)((float) stol(mem_util_kb, nullptr, 10) / 1024.0));
     return mem_util_mb;
 }
 
-// TODO: Return the age of this process (in seconds)
-long int Process::UpTime() { return 0; }
+// DONE: Return the age of this process (in seconds)
+long int Process::UpTime() { 
+    long system_uptime_sec = LinuxParser::UpTime();
+    long starttime_ticks = LinuxParser::UpTime(pid_);
+    int Hertz = 1; //sysconf(_SC_CLK_TCK);
+    long starttime_sec = (long) ((float) starttime_ticks / (float) Hertz);
+    return system_uptime_sec - starttime_sec; 
+}
+
 
 // TODO: Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function
