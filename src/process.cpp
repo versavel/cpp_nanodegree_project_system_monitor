@@ -23,7 +23,7 @@ string Process::User() {
 // DONE: Return this process's CPU utilization
 float Process::CpuUtilization() { 
     float Hertz = (float) sysconf(_SC_CLK_TCK);
-    float uptime = (float) LinuxParser::UpTime();
+    float uptime = LinuxParser::UpTime();
     vector<long> cpu_data = LinuxParser::CpuUtilization(pid_);
     float utime  = (float) cpu_data[0] / Hertz;
     float stime = (float) cpu_data[1] / Hertz;
@@ -53,15 +53,15 @@ string Process::Ram() {
 
 // DONE: Return the age of this process (in seconds)
 long int Process::UpTime() { 
-    long system_uptime_sec = LinuxParser::UpTime();
+    float system_uptime_sec = LinuxParser::UpTime();
     long starttime_ticks = LinuxParser::UpTime(pid_);
-    int Hertz = 1; //sysconf(_SC_CLK_TCK);
-    long starttime_sec = (long) ((float) starttime_ticks / (float) Hertz);
-    return system_uptime_sec - starttime_sec; 
+    int Hertz = sysconf(_SC_CLK_TCK);
+    float starttime_sec =  (float) starttime_ticks / (float) Hertz;
+    return (long) (system_uptime_sec - starttime_sec); 
 }
 
 
-// TODO: Overload the "less than" comparison operator for Process objects
+// DONE: Overload the "less than" comparison operator for Process objects
 bool Process::operator< (Process & a) {
     return Process::CpuUtilization() < a.Process::CpuUtilization();
 }
