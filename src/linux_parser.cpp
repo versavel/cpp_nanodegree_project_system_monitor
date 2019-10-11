@@ -105,7 +105,7 @@ float LinuxParser::UpTime() {
     std::istringstream linestream(line);
     linestream >> uptime1 >> uptime2;
   }
-  return uptime1 + uptime2;
+  return uptime1 ; //+ uptime2;
 }
 
 
